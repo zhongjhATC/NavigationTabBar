@@ -291,6 +291,10 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     // Custom typeface
     protected Typeface mTypeface;
 
+    // TODO-zhongjh 用于显示阴影
+    Drawable mDrawableShadow = getResources().getDrawable(R.drawable.shadow);
+    Rect mRectShadow;
+
     public NavigationTabBar(final Context context) {
         this(context, null);
     }
@@ -996,6 +1000,10 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                 mBadgePaint.getTextBounds(PREVIEW_BADGE, 0, 1, badgeBounds);
                 mBadgeMargin = (badgeBounds.height() * 0.5F) +
                         (mBadgeTitleSize * BADGE_HORIZONTAL_FRACTION * BADGE_VERTICAL_FRACTION);
+
+                // TODO-zhongjh 初始化阴影，跟在mBadgeMargin后面
+                mRectShadow = new Rect(0, (int) mBadgeMargin - 2, width, (int) mBadgeMargin);
+                mDrawableShadow.setBounds(mRectShadow);
             }
         } else {
             // Disable vertical translation in coordinator layout
@@ -1077,6 +1085,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     protected void onDraw(final Canvas canvas) {
         // Get height of NTB with badge on nor
         final int mBadgedHeight = (int) (mBounds.height() + mBadgeMargin);
+
+        // TODO-zhongjh 绘制阴影
+        mDrawableShadow.draw(canvas);
 
         // Set main canvas
         if (mBitmap == null || mBitmap.isRecycled()) {
